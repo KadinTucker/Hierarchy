@@ -39,7 +39,7 @@ class Deck {
      * Returns the card taken and removes that card from the deck
      */
     Card drawRandom() {
-        int chosenIndex = uniform(0, this.cards.length);
+        int chosenIndex = uniform(0, cast(int)this.cards.length);
         Card chosen = this.cards[chosenIndex];
         this.cards.remove(chosenIndex);
         return chosen;
