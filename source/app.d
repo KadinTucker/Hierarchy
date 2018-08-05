@@ -1,7 +1,8 @@
-module app;
+module hierarchy.app;
 
-import d2d;
+import hierarchy;
 
 void main() {
+    Image.initialize();
 	Display display = new Display(1100, 690, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE, 0, "Hierarchy");
 }
