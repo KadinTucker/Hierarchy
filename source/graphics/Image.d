@@ -45,7 +45,6 @@ enum ImagePath {
 
 /**
  * A class which stores images as well as generates images for the game
- * 
  */
 class Image {
 
@@ -56,7 +55,7 @@ class Image {
      */
     static void initialize() {
         foreach (image; EnumMembers!ImagePath) {
-            mixin("allImages[image] = loadImage(\""~image~"\");");
+            allImages[image] = loadImage(cast(string)image);
         }
     }
 
