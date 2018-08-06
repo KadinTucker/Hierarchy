@@ -10,6 +10,7 @@ class HandComponent : Component {
 
     iRectangle _location; ///The location of the component; accessed by property method
     Texture _drawTexture; ///The texture to draw to the screen
+    Card[] hand; ///The hand indicated by this component
 
     /**
      * Constructs a new handcomponent in the given display and at the given location
@@ -18,7 +19,8 @@ class HandComponent : Component {
         super(container);
         this._location = location;
         Deck tempDeck = new Deck();
-        this.updateTexture(tempDeck.distributeCards(7)[0]);
+        this.hand = tempDeck.distributeCards(2)[0];
+        this.updateTexture();
     }
 
     /**
@@ -35,16 +37,21 @@ class HandComponent : Component {
         this._location = newLocation;
     }
 
+    /**
+     * Draws the component's draw texture to its location
+     */
     override void draw() {
         this.container.renderer.copy(this._drawTexture, this._location);
     }
 
-    private void updateTexture(Card[] cards) {
-        import std.stdio;
-        writeln(cards);
+    /**
+     * Updates the texture to drawn to the screen
+     * Happens whenever there is a change to the hand
+     */
+    private void updateTexture() {
         Surface handSurface = new Surface(this._location.extent.x, this._location.extent.y, SDL_PIXELFORMAT_RGBA32);
         handSurface.fill(new iRectangle(0, 0, this._location.extent.x, this._location.extent.y), Color(5, 70, 10));
-        int[] positions = this.getDrawPositions(cards.length);
+        int[] positions = this.getDrawPositions(this.hand.length);
         foreach(pos; positions) {
             handSurface.blit(Image.allImages[ImagePath.CARD_BASE], null, pos, 0);
         }
@@ -54,24 +61,23 @@ class HandComponent : Component {
     /**
      * Gets the pixel positions at which to draw each card,
      * given a number of cards
-     * Assumes that cards are 75 px wide and that there
-     * can be a maximum of 7 cards
-     * TODO: Make this more modular with the hand component's width
      */
     private int[] getDrawPositions(int numCards) {
         int[] positions;
-        if(numCards > 7) {
-            int actingWidth = 75 - 75 * (numCards - 7) / (numCards - 1); //75 is card width
+        int cardWidth = Image.allImages[ImagePath.CARD_BASE].dimensions.x;
+        int maxCards = this._location.extent.x / cardWidth;
+        if(numCards > maxCards) {
+            int actingWidth = cast(int)(cardWidth * (1.0 - (numCards - maxCards) / cast(double)(numCards - 1)));
             for(int i = 0; i < numCards; i++) {
                 positions ~= i * actingWidth;
             }
         } else {
             for(int i = -(numCards / 2); i < numCards / 2; i++) {
-                positions ~= (i + 3) * 75; //3 is 7 (max cards) integer divided by 2
+                positions ~= (i + maxCards / 2) * cardWidth;
             }
             if(numCards % 2 == 0) {
                 for(int i = 0; i < positions.length; i++) {
-                    positions[i] += 37; //37 is 75 / 2
+                    positions[i] += cardWidth / 2;
                 }
             }
         }

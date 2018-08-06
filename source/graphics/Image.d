@@ -49,6 +49,7 @@ enum ImagePath {
 class Image {
 
     static Surface[ImagePath] allImages; ///An associative array of all of the images in the game which can be accessed by enum
+    static Surface[2][CardType] cardTypeImages; ///An associative array of each of the images used for card types, [red, black]
 
     /**
      * Loads every image from the enumerated image paths above
@@ -57,6 +58,14 @@ class Image {
         foreach (image; EnumMembers!ImagePath) {
             allImages[image] = loadImage(cast(string)image);
         }
+    }
+
+    /**
+     * Given a card, returns the image used to display it
+     * TODO:
+     */
+    static Surface getCardImage(Card card) {
+        return null;
     }
 
 }

@@ -42,3 +42,11 @@ struct Card {
     CardType type; ///The type of the card
 
 }
+
+/**
+ * Sorts the cards in hand in order of value
+ * TODO:
+ */
+void sortHand(Card[] hand) {
+
+}
