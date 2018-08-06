@@ -2,7 +2,6 @@ module hierarchy.logic.Deck;
 
 import hierarchy.logic;
 
-import std.algorithm;
 import std.random;
 import std.traits;
 
@@ -41,8 +40,32 @@ class Deck {
     Card drawRandom() {
         int chosenIndex = uniform(0, cast(int)this.cards.length);
         Card chosen = this.cards[chosenIndex];
-        this.cards.remove(chosenIndex);
+        import std.algorithm;
+        this.cards = this.cards.remove(chosenIndex);
         return chosen;
+    }
+
+    /**
+     * Distributes cards mostly evenly among the given number of players
+     * Refreshes the deck each time this is done
+     */
+    Card[][] distributeCards(int numPlayers) {
+        if(numPlayers <= 0) {
+            return null;
+        }
+        Card[][] allHands;
+        for(int i = 0; i < numPlayers; i++) {
+            allHands ~= null;
+        }
+        while(this.cards.length > 0) {
+            for(int i; i < allHands.length; i++) {
+                if(this.cards.length > 0) {
+                    allHands[i] ~= this.drawRandom();
+                }
+            }
+        }
+        this.refresh();
+        return allHands;
     }
 
 }
