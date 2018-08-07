@@ -19,7 +19,8 @@ class HandComponent : Component {
         super(container);
         this._location = location;
         Deck tempDeck = new Deck();
-        this.hand = tempDeck.distributeCards(2)[0];
+        this.hand = tempDeck.distributeCards(4)[0];
+        sortHand(this.hand);
         this.updateTexture();
     }
 

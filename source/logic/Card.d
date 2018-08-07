@@ -30,18 +30,18 @@ struct CardTypeData {
  */
 enum CardType : CardTypeData {
     THREE=CardTypeData(ImagePath.BLACK_THREE, ImagePath.RED_THREE, 0),
-    FOUR=CardTypeData(ImagePath.BLACK_FOUR, ImagePath.RED_FOUR, 0),
-    FIVE=CardTypeData(ImagePath.BLACK_FIVE, ImagePath.RED_FIVE, 0),
-    SIX=CardTypeData(ImagePath.BLACK_SIX, ImagePath.RED_SIX, 0),
-    SEVEN=CardTypeData(ImagePath.BLACK_SEVEN, ImagePath.RED_SEVEN, 0),
-    EIGHT=CardTypeData(ImagePath.BLACK_EIGHT, ImagePath.RED_EIGHT, 0),
-    NINE=CardTypeData(ImagePath.BLACK_NINE, ImagePath.RED_NINE, 0),
-    TEN=CardTypeData(ImagePath.BLACK_TEN, ImagePath.RED_TEN, 0),
-    JACK=CardTypeData(ImagePath.BLACK_JACK, ImagePath.RED_JACK, 0),
-    QUEEN=CardTypeData(ImagePath.BLACK_QUEEN, ImagePath.RED_QUEEN, 0),
-    KING=CardTypeData(ImagePath.BLACK_KING, ImagePath.RED_KING, 0),
-    ACE=CardTypeData(ImagePath.BLACK_ACE, ImagePath.RED_ACE, 0),
-    TWO=CardTypeData(ImagePath.BLACK_TWO, ImagePath.RED_TWO, 0)
+    FOUR=CardTypeData(ImagePath.BLACK_FOUR, ImagePath.RED_FOUR, 1),
+    FIVE=CardTypeData(ImagePath.BLACK_FIVE, ImagePath.RED_FIVE, 2),
+    SIX=CardTypeData(ImagePath.BLACK_SIX, ImagePath.RED_SIX, 3),
+    SEVEN=CardTypeData(ImagePath.BLACK_SEVEN, ImagePath.RED_SEVEN, 4),
+    EIGHT=CardTypeData(ImagePath.BLACK_EIGHT, ImagePath.RED_EIGHT, 5),
+    NINE=CardTypeData(ImagePath.BLACK_NINE, ImagePath.RED_NINE, 6),
+    TEN=CardTypeData(ImagePath.BLACK_TEN, ImagePath.RED_TEN, 7),
+    JACK=CardTypeData(ImagePath.BLACK_JACK, ImagePath.RED_JACK, 8),
+    QUEEN=CardTypeData(ImagePath.BLACK_QUEEN, ImagePath.RED_QUEEN, 9),
+    KING=CardTypeData(ImagePath.BLACK_KING, ImagePath.RED_KING, 10),
+    ACE=CardTypeData(ImagePath.BLACK_ACE, ImagePath.RED_ACE, 11),
+    TWO=CardTypeData(ImagePath.BLACK_TWO, ImagePath.RED_TWO, 12)
 }
 
 /**
@@ -56,8 +56,15 @@ struct Card {
 
 /**
  * Sorts the cards in hand in order of value
- * TODO:
  */
 void sortHand(Card[] hand) {
-
+    for(int i = 1; i < hand.length; i++) {
+        for(int j = 0; j < i; j++) {
+            if(hand[j].type.value > hand[i].type.value) {
+                Card tempJ = hand[j];
+                hand[j] = hand[i];
+                hand[i] = tempJ;
+            }
+        }
+    }
 }
