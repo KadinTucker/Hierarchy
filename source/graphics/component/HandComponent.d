@@ -52,8 +52,10 @@ class HandComponent : Component {
         Surface handSurface = new Surface(this._location.extent.x, this._location.extent.y, SDL_PIXELFORMAT_RGBA32);
         handSurface.fill(new iRectangle(0, 0, this._location.extent.x, this._location.extent.y), Color(5, 70, 10));
         int[] positions = this.getDrawPositions(this.hand.length);
+        int increment;
         foreach(pos; positions) {
-            handSurface.blit(Image.allImages[ImagePath.CARD_BASE], null, pos, 0);
+            handSurface.blit(Image.getCardImage(this.hand[increment]), null, pos, 0);
+            increment++;
         }
         this._drawTexture = new Texture(handSurface, this.container.renderer);
     }

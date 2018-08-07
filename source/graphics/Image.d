@@ -2,6 +2,7 @@ module hierarchy.graphics.Image;
 
 import hierarchy;
 
+import std.conv;
 import std.traits;
 
 /**
@@ -24,19 +25,19 @@ enum ImagePath {
     BLACK_JACK="res/cards/blackjack.png",
     BLACK_QUEEN="res/cards/blackqueen.png",
     BLACK_KING="res/cards/blackking.png",
-    RED_ACE="res/cards/blackace.png",
-    RED_TWO="res/cards/blacktwo.png",
-    RED_THREE="res/cards/blackthree.png",
-    RED_FOUR="res/cards/blackfour.png",
-    RED_FIVE="res/cards/blackfive.png",
-    RED_SIX="res/cards/blacksix.png",
-    RED_SEVEN="res/cards/blackseven.png",
-    RED_EIGHT="res/cards/blackeight.png",
-    RED_NINE="res/cards/blacknine.png",
-    RED_TEN="res/cards/blackten.png",
-    RED_JACK="res/cards/blackjack.png",
-    RED_QUEEN="res/cards/blackqueen.png",
-    RED_KING="res/cards/blackking.png",
+    RED_ACE="res/cards/redace.png",
+    RED_TWO="res/cards/redtwo.png",
+    RED_THREE="res/cards/redthree.png",
+    RED_FOUR="res/cards/redfour.png",
+    RED_FIVE="res/cards/redfive.png",
+    RED_SIX="res/cards/redsix.png",
+    RED_SEVEN="res/cards/redseven.png",
+    RED_EIGHT="res/cards/redeight.png",
+    RED_NINE="res/cards/rednine.png",
+    RED_TEN="res/cards/redten.png",
+    RED_JACK="res/cards/redjack.png",
+    RED_QUEEN="res/cards/redqueen.png",
+    RED_KING="res/cards/redking.png",
     SMALL_SPADE="res/cards/spade.png",
     SMALL_HEART="res/cards/heart.png",
     SMALL_DIAMOND="res/cards/diamond.png",
@@ -62,10 +63,19 @@ class Image {
 
     /**
      * Given a card, returns the image used to display it
-     * TODO:
+     * TODO: upside down part of image
      */
     static Surface getCardImage(Card card) {
-        return null;
+        Surface cardBase = loadImage(ImagePath.CARD_BASE); //TODO: make this copy instead of re-loading
+        Surface typeImage;
+        if(card.suit == CardSuit.SPADE || card.suit == CardSuit.CLUB) {
+            typeImage = loadImage(cast(string)card.type.blackPath);
+        } else {
+            typeImage = loadImage(cast(string)card.type.redPath);
+        }
+        cardBase.blit(typeImage, null, 8, 8);
+        cardBase.blit(Image.allImages[card.suit], null, 9, 32); //TODO: make these blitting locations defined as constants somewhere
+        return cardBase;
     }
 
 }
