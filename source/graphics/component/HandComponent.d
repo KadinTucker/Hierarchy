@@ -129,6 +129,18 @@ class HandComponent : Component {
     }
 
     /**
+     * Returns the actual cards that are selected 
+     * from the indices as thusly stored in this object 
+     */
+    Card[] getSelectedCards() {
+        Card[] toPlay;
+        foreach(index; selectedCards) {
+            toPlay ~= this.owner.hand[index];
+        }
+        return toPlay;
+    }
+
+    /**
      * When the user clicks, try to select a card
      * TODO: Have the user be able to drag across cards to select
      */

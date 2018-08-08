@@ -24,23 +24,13 @@ class Player {
     }
 
     /**
-     * Tries to play cards the player's hand
-     * Uses a list of indices from the hand
-     * Returns whether or not the play occurred
+     * Removes the given cards from the player's hand
      */
-    bool playCards(int[] toPlayIndices) {
-        Card[] toPlay;
-        foreach(index; toPlayIndices) {
-            toPlay ~= this.hand[index];
+    void discardCards(Card[] cards) {
+        foreach(card; cards) {
+            import std.algorithm;
+            this.hand = this.hand.remove(this.hand.countUntil(card));
         }
-        bool played = this.game.playCards(toPlay);
-        if(played) {
-            foreach(card; toPlay) {
-                import std.algorithm;
-                this.hand = this.hand.remove(this.hand.countUntil(card));
-            }
-        }
-        return played;
     }
 
 }

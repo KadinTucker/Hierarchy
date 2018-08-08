@@ -39,4 +39,12 @@ class Pile {
         return topCards;
     }
 
+    /**
+     * Resets the pile to be empty
+     */ 
+    void reset() {
+        this.cards = null;
+        this.mode = 0;
+    }
+
 }
