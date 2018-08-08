@@ -18,6 +18,7 @@ class CenterPile : Component {
         super(container);
         this._location = location;
         this.pile = pile;
+        this.updateTexture();
     }
 
     /**

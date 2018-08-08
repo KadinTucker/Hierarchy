@@ -23,7 +23,7 @@ class HandComponent : Component {
         super(container);
         this._location = location;
         Deck tempDeck = new Deck();
-        this.hand = tempDeck.distributeCards(5)[0];
+        this.hand = tempDeck.distributeCards(4)[0];
         sortHand(this.hand);
         this.updateTexture();
         this.updateCardPositions();
@@ -113,7 +113,21 @@ class HandComponent : Component {
     }
 
     /**
+     * Selects a card at the given index of cards in hand
+     */
+    private void selectCard(int index) {
+        if(this.selectedCards.canFind(index)) {
+            import std.algorithm;
+            this.selectedCards = this.selectedCards.remove(this.selectedCards.countUntil(index));
+        } else {
+            this.selectedCards ~= index;
+        }
+        this.updateTexture();
+    }
+
+    /**
      * When the user clicks, try to select a card
+     * TODO: Have the user be able to drag across cards to select
      */
     void handleEvent(SDL_Event event) {
         if(event.type == SDL_MOUSEBUTTONDOWN) {
@@ -121,12 +135,12 @@ class HandComponent : Component {
                 for(int i = 0; i < this.cardPositions.length; i++) {
                     if(this.cardPositions[i].contains(new iVector(this.container.mouse.location.x - this._location.initialPoint.x, 
                             this.container.mouse.location.y - this._location.initialPoint.y))) {
-                        import std.stdio;
-                        writeln("Clicked a card");
-                        this.selectedCards ~= i;
-                        this.updateTexture();
+                        this.selectCard(i);
                     }
                 }
+            } else if(event.button.button == SDL_BUTTON_RIGHT) {
+                this.selectedCards = null;
+                this.updateTexture();
             }
         }
     }
