@@ -14,6 +14,7 @@ class HandComponent : Component {
     Texture _drawTexture; ///The texture to draw to the screen
     Card[] hand; ///The hand indicated by this component
     int[] selectedCards; ///The cards selected by the player by index
+    iRectangle[] cardPositions; ///The card positions relative to the component; x is distance along and y is the width of the card; for use in clicking 
 
     /**
      * Constructs a new handcomponent in the given display and at the given location
@@ -24,8 +25,8 @@ class HandComponent : Component {
         Deck tempDeck = new Deck();
         this.hand = tempDeck.distributeCards(5)[0];
         sortHand(this.hand);
-        this.selectedCards ~= 4;
         this.updateTexture();
+        this.updateCardPositions();
     }
 
     /**
@@ -69,8 +70,25 @@ class HandComponent : Component {
     }
 
     /**
+     * Updates the stored card positions
+     * based on the cards in hand
+     */
+    private void updateCardPositions() {
+        this.cardPositions = null;
+        int[] positions = this.getDrawPositions(this.hand.length);
+        for(int i = 0; i < positions.length - 1; i++) {
+            this.cardPositions ~= new iRectangle(positions[i], 3, positions[i + 1] - positions[i], Image.allImages[ImagePath.CARD_BASE].dimensions.y);
+        }
+        if(positions.length > 0) {
+            this.cardPositions ~= new iRectangle(positions[positions.length - 1], 3, Image.allImages[ImagePath.CARD_BASE].dimensions.x,
+                    Image.allImages[ImagePath.CARD_BASE].dimensions.y);
+        }
+    }
+
+    /**
      * Gets the pixel positions at which to draw each card,
      * given a number of cards
+     * Also sets the stored cardPositions
      */
     private int[] getDrawPositions(int numCards) {
         int[] positions;
@@ -94,6 +112,23 @@ class HandComponent : Component {
         return positions;
     }
 
-    void handleEvent(SDL_Event event) {}
+    /**
+     * When the user clicks, try to select a card
+     */
+    void handleEvent(SDL_Event event) {
+        if(event.type == SDL_MOUSEBUTTONDOWN) {
+            if(event.button.button == SDL_BUTTON_LEFT) {
+                for(int i = 0; i < this.cardPositions.length; i++) {
+                    if(this.cardPositions[i].contains(new iVector(this.container.mouse.location.x - this._location.initialPoint.x, 
+                            this.container.mouse.location.y - this._location.initialPoint.y))) {
+                        import std.stdio;
+                        writeln("Clicked a card");
+                        this.selectedCards ~= i;
+                        this.updateTexture();
+                    }
+                }
+            }
+        }
+    }
  
 }
