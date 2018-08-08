@@ -8,7 +8,7 @@ class GameActivity : Activity {
 
     this(Display container) {
         super(container);
-        this.hand = new HandComponent(container, new iRectangle(287, 535, 525, 115));
+        this.hand = new HandComponent(container, new iRectangle(287, 525, 525, 120));
         this.components ~= this.hand;
     }
 

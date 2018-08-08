@@ -12,6 +12,7 @@ import std.traits;
  */
 enum ImagePath {
     CARD_BASE="res/cards/cardbase.png",
+    CARD_HIGHLIGHT="res/cards/highlight.png",
     BLACK_ACE="res/cards/blackace.png",
     BLACK_TWO="res/cards/blacktwo.png",
     BLACK_THREE="res/cards/blackthree.png",

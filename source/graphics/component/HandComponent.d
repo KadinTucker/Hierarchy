@@ -2,6 +2,8 @@ module hierarchy.graphics.component.HandComponent;
 
 import hierarchy;
 
+import std.algorithm;
+
 /**
  * The screen component which displays the player's hand
  * Draws cards in a fashion that pleases the eye
@@ -11,6 +13,7 @@ class HandComponent : Component {
     iRectangle _location; ///The location of the component; accessed by property method
     Texture _drawTexture; ///The texture to draw to the screen
     Card[] hand; ///The hand indicated by this component
+    int[] selectedCards; ///The cards selected by the player by index
 
     /**
      * Constructs a new handcomponent in the given display and at the given location
@@ -19,8 +22,9 @@ class HandComponent : Component {
         super(container);
         this._location = location;
         Deck tempDeck = new Deck();
-        this.hand = tempDeck.distributeCards(4)[0];
+        this.hand = tempDeck.distributeCards(5)[0];
         sortHand(this.hand);
+        this.selectedCards ~= 4;
         this.updateTexture();
     }
 
@@ -55,7 +59,10 @@ class HandComponent : Component {
         int[] positions = this.getDrawPositions(this.hand.length);
         int increment;
         foreach(pos; positions) {
-            handSurface.blit(Image.getCardImage(this.hand[increment]), null, pos, 0);
+            if(this.selectedCards.canFind(increment)) {
+                handSurface.blit(Image.allImages[ImagePath.CARD_HIGHLIGHT], null, pos - 3, 0);
+            }
+            handSurface.blit(Image.getCardImage(this.hand[increment]), null, pos, 3);
             increment++;
         }
         this._drawTexture = new Texture(handSurface, this.container.renderer);
