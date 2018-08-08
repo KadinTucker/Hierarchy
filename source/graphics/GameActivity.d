@@ -10,8 +10,8 @@ class GameActivity : Activity {
 
     HandComponent hand; ///The hand component used by the player on this activity
     CenterPile pile; ///The center-pile component for the game
+    Notifications notificationComponent; ///The notifications display component
     Game game; ///The game being run by this activity
-    string notification; ///A notification on the game's status to be displayed: TODO: make this a property affecting notification component
 
     /**
      * Constructs a new game activity in the given container
@@ -23,7 +23,16 @@ class GameActivity : Activity {
         this.components ~= this.hand;
         this.pile = new CenterPile(container, new iRectangle(500, 200, 150, 115), game.pile);
         this.components ~= this.pile;
+        this.notificationComponent = new Notifications(container, new iRectangle(450, 150, 250, 30));
+        this.components ~= this.notificationComponent;
         this.game = game;
+    }
+
+    /**
+     * Set's the game's notification on the notification component
+     */
+    @property void notification(string toSet) {
+        this.notificationComponent.updateTexture(toSet);
     }
 
     /**
@@ -96,6 +105,10 @@ class GameActivity : Activity {
             this.game.isCleared = true;
             this.notification = "Clear!";
             return true;
+        }
+        if(this.hand.owner.id != this.game.players[this.game.activePlayerIndex].id) { //4 can be completed out of turn, but otherwise player cannot play
+            this.notification = "It's not your turn";
+            return false;
         }
         if(this.game.pile.mode != 0 && played.length != this.game.pile.mode) { //If a 4 is not completed and the mode of play is not followed, cannot play
             return false;
