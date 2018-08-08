@@ -46,7 +46,7 @@ class CenterPile : Component {
      * Updates the texture to be drawn 
      * Happens whenever there is a change to the pile
      */
-    private void updateTexture() {
+    void updateTexture() {
         Surface pileSurface = new Surface(this._location.extent.x, this._location.extent.y, SDL_PIXELFORMAT_RGBA32);
         pileSurface.fill(new iRectangle(0, 0, this._location.extent.x, this._location.extent.y), Color(5, 70, 10));
         Card[] toBeDrawn = this.pile.getTopCards();

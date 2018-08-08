@@ -17,6 +17,7 @@ class Pile {
      */
     void addToPile(Card[] toAdd) {
         this.cards.insertInPlace(0, toAdd);
+        this.mode = toAdd.length;
     }
 
     /**

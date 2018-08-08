@@ -12,21 +12,19 @@ class HandComponent : Component {
 
     iRectangle _location; ///The location of the component; accessed by property method
     Texture _drawTexture; ///The texture to draw to the screen
-    Card[] hand; ///The hand indicated by this component
+    Player owner; ///The player whose hand to indicate with this component
     int[] selectedCards; ///The cards selected by the player by index
     iRectangle[] cardPositions; ///The card positions relative to the component; x is distance along and y is the width of the card; for use in clicking 
 
     /**
      * Constructs a new handcomponent in the given display and at the given location
      */
-    this(Display container, iRectangle location) {
+    this(Display container, iRectangle location, Player owner) {
         super(container);
         this._location = location;
-        Deck tempDeck = new Deck();
-        this.hand = tempDeck.distributeCards(4)[0];
-        sortHand(this.hand);
+        this.owner = owner;
+        sortHand(this.owner.hand);
         this.updateTexture();
-        this.updateCardPositions();
     }
 
     /**
@@ -54,19 +52,20 @@ class HandComponent : Component {
      * Updates the texture to drawn to the screen
      * Happens whenever there is a change to the hand
      */
-    private void updateTexture() {
+    void updateTexture() {
         Surface handSurface = new Surface(this._location.extent.x, this._location.extent.y, SDL_PIXELFORMAT_RGBA32);
         handSurface.fill(new iRectangle(0, 0, this._location.extent.x, this._location.extent.y), Color(5, 70, 10));
-        int[] positions = this.getDrawPositions(this.hand.length);
+        int[] positions = this.getDrawPositions(this.owner.hand.length);
         int increment;
         foreach(pos; positions) {
             if(this.selectedCards.canFind(increment)) {
                 handSurface.blit(Image.allImages[ImagePath.CARD_HIGHLIGHT], null, pos - 3, 0);
             }
-            handSurface.blit(Image.getCardImage(this.hand[increment]), null, pos, 3);
+            handSurface.blit(Image.getCardImage(this.owner.hand[increment]), null, pos, 3);
             increment++;
         }
         this._drawTexture = new Texture(handSurface, this.container.renderer);
+        this.updateCardPositions();
     }
 
     /**
@@ -75,7 +74,11 @@ class HandComponent : Component {
      */
     private void updateCardPositions() {
         this.cardPositions = null;
-        int[] positions = this.getDrawPositions(this.hand.length);
+        int[] positions = this.getDrawPositions(this.owner.hand.length);
+        if(this.owner.hand.length == 0) {
+            this.cardPositions = [];
+            return;
+        }
         for(int i = 0; i < positions.length - 1; i++) {
             this.cardPositions ~= new iRectangle(positions[i], 3, positions[i + 1] - positions[i], Image.allImages[ImagePath.CARD_BASE].dimensions.y);
         }
@@ -100,7 +103,7 @@ class HandComponent : Component {
                 positions ~= i * actingWidth;
             }
         } else {
-            for(int i = -(numCards / 2); i < numCards / 2; i++) {
+            for(int i = -(numCards / 2); i < -(numCards / 2) + numCards; i++) {
                 positions ~= (i + maxCards / 2) * cardWidth;
             }
             if(numCards % 2 == 0) {

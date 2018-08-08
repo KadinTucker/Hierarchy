@@ -31,6 +31,7 @@ class Deck {
                 this.cards ~= Card(suit, type);
             }
         }
+        this.cards.randomShuffle();
     }
 
     /**
