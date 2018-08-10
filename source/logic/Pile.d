@@ -13,6 +13,14 @@ class Pile {
     int mode; ///How many cards need to be put down; defined by the lead; 0 means any number can be played
 
     /**
+     * Constructs a new pile
+     * By default begins with no cards
+     */
+    this(Card[] cards = null) {
+        this.cards = cards;
+    }
+
+    /**
      * Inserts the cards into the pile
      */
     void addToPile(Card[] toAdd) {

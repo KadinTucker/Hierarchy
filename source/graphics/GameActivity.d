@@ -56,6 +56,7 @@ class GameActivity : Activity {
                     this.hand.selectedCards = null;
                     this.hand.updateTexture();
                     this.game.isCleared = false;
+                    this.notification = " ";
                 } else if(this.pile.location.contains(this.container.mouse.location)) {
                     if(this.playCards(this.hand.getSelectedCards())) {
                         this.hand.owner.discardCards(this.hand.getSelectedCards());
@@ -129,6 +130,7 @@ class GameActivity : Activity {
             }
         } else {
             this.game.activePlayerIndex += 1;
+            this.notification = " ";
         }
         this.game.activePlayerIndex %= this.game.players.length;
         return true;
