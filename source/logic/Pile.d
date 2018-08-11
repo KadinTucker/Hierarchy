@@ -14,10 +14,11 @@ class Pile {
 
     /**
      * Constructs a new pile
-     * By default begins with no cards
+     * By default begins with no cards and mode 0
      */
-    this(Card[] cards = null) {
+    this(Card[] cards = null, int mode = 0) {
         this.cards = cards;
+        this.mode = mode;
     }
 
     /**
