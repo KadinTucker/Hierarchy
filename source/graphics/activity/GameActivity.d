@@ -1,10 +1,9 @@
-module hierarchy.graphics.GameActivity;
+module hierarchy.graphics.activity.GameActivity;
 
 import hierarchy;
 
 /**
  * The activity in which the player plays the game
- * TODO: Make it store a game
  */
 class GameActivity : Activity {
 

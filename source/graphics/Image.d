@@ -42,7 +42,11 @@ enum ImagePath {
     SMALL_SPADE="res/cards/spade.png",
     SMALL_HEART="res/cards/heart.png",
     SMALL_DIAMOND="res/cards/diamond.png",
-    SMALL_CLUB="res/cards/club.png"
+    SMALL_CLUB="res/cards/club.png",
+    TITLE="res/interface/title.png",
+    HOST="res/interface/host.png",
+    JOIN="res/interface/join.png",
+    QUIT="res/interface/quit.png"
 }
 
 /**

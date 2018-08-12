@@ -33,15 +33,20 @@ class Game {
         }
         this.pile = new Pile();
         this.socket = new Socket(AddressFamily.INET, SocketType.STREAM);
-        this.makeConnection();
+    }
+
+    ~this() {
+        this.socket.shutdown(SocketShutdown.BOTH);
+        this.socket.close();
     }
 
     /**
-     * Makes a connection with the socket
-     * TODO:
+     * Creates a host connection at the port
+     * Uses the local address
      */
-    void makeConnection() { 
-        this.socket.connect(this.socket.localAddress);
+    void hostConnection() { 
+        Address[] addresses = getAddress("127.0.0.1");
+        this.socket.bind(addresses[0]);
     }
 
 }
