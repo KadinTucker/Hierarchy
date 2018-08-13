@@ -6,6 +6,14 @@ import std.conv;
 import std.socket;
 
 /**
+ * An enum that determines how the game should be constructed
+ */
+enum GameType {
+    HOST=0,
+    JOIN=1
+}
+
+/**
  * The class which stores all of the functionalities of the game
  * Main purpose is to serialize and de-serialize
  * TODO: implement serialization
@@ -23,8 +31,9 @@ class Game {
     /**
      * Constructs a new game object
      * with the given number of players
+     * Based on the game type, either creates a host or joins a port
      */
-    this(int numPlayers) {
+    this(int numPlayers, GameType type) {
         Deck tempDeck = new Deck();
         Card[][] allHands = tempDeck.distributeCards(numPlayers);
         for(int i = 0; i < allHands.length; i++) {
@@ -33,20 +42,18 @@ class Game {
         }
         this.pile = new Pile();
         this.socket = new Socket(AddressFamily.INET, SocketType.STREAM);
-    }
-
-    ~this() {
-        this.socket.shutdown(SocketShutdown.BOTH);
-        this.socket.close();
+        if(type == GameType.HOST) { 
+            Address[] addresses = getAddress("127.0.0.1");
+            this.socket.bind(addresses[0]);
+        }
     }
 
     /**
-     * Creates a host connection at the port
-     * Uses the local address
+     * Shutdown the game's socket when the game is closed
      */
-    void hostConnection() { 
-        Address[] addresses = getAddress("127.0.0.1");
-        this.socket.bind(addresses[0]);
+    ~this() {
+        this.socket.shutdown(SocketShutdown.BOTH);
+        this.socket.close();
     }
 
 }
