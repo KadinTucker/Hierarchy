@@ -42,17 +42,14 @@ class MenuActivity : Activity {
      * TODO: Make this done less crappily
      */
     override void handleEvent(SDL_Event event) {
-        import std.stdio;
         if(event.type == SDL_MOUSEBUTTONDOWN) {
             if(event.button.button == SDL_BUTTON_LEFT) {
-                writeln("Left clicked");
-                writeln(this.container.mouse.location);
                 if(this.quitButton.contains(this.container.mouse.location)) {
-                    writeln("quit");
                     this.container.isRunning = false;
                 } else if(this.hostButton.contains(this.container.mouse.location)) {
-                    writeln("host");
                     this.container.activity = new GameActivity(this.container, new Game(4, GameType.HOST)); //TODO: add lobbies 
+                } else if(this.joinButton.contains(this.container.mouse.location)) {
+                    this.container.activity = new GameActivity(this.container, new Game(4, GameType.JOIN)); //TODO: add lobbies 
                 }
             }
         }

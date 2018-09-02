@@ -2,6 +2,8 @@ module hierarchy.logic.Card;
 
 import hierarchy;
 
+import std.conv;
+
 /**
  * An enumeration of all of the suits in the game
  * and the image paths used to draw them
@@ -51,6 +53,10 @@ struct Card {
 
     CardSuit suit; ///The suit of the card
     CardType type; ///The type of the card
+
+    string toString() {
+        return "(" ~ suit.to!string ~ "," ~ type.to!string ~ ")";
+    }
 
 }
 

@@ -45,6 +45,9 @@ class Game {
         if(type == GameType.HOST) { 
             Address[] addresses = getAddress("127.0.0.1");
             this.socket.bind(addresses[0]);
+        } else if(type == GameType.JOIN) {
+            Address[] addresses = getAddress("127.0.0.1");
+            this.socket.connect(addresses[0]);
         }
     }
 

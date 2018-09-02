@@ -104,6 +104,7 @@ class GameActivity : Activity {
             this.game.pile.addToPile(played);
             this.game.isCleared = true;
             this.notification = "Clear!";
+            //Set active player to be the one who played the four
             return true;
         }
         if(this.hand.owner.id != this.game.players[this.game.activePlayerIndex].id) { //4 can be completed out of turn, but otherwise player cannot play
